@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# EasyTotal
 
-## Getting Started
+Esta es una mini aplicación desarrollada para facilitar el cálculo del total de compras mientras haces tus compras en el supermercado. Con esta aplicación, podes ingresar el nombre y el precio de cada producto que agregas al carrito y ver el total acumulado.
 
-First, run the development server:
+## Características
+
+- Permite agregar productos con su precio individual.
+- Calcula automáticamente el total de la compra a medida que se agregan productos.
+- Interfaz simple y fácil de usar.
+
+## Tecnologías Utilizadas
+
+- NextJS (React)
+- Tailwind CSS
+- JavaScript
+
+## Capturas de Pantalla
+
+![image](https://i.ibb.co/XLzDkdB/Screenshot-from-2024-05-31-20-49-04.png)
+
+## Cómo Usar
+
+1. Clona el repo
+2. Instala las dependencias con pnpm (o npm o yarn, según tu preferencia):
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. Inicia el servidor de desarrollo:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+```bash
+pnpm dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+## Contribuciones
 
-## Learn More
+Las contribuciones son bienvenidas. Si deseas mejorar esta mini aplicación, no dudes en hacer un fork del repositorio y enviar un pull request con tus mejoras.
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
