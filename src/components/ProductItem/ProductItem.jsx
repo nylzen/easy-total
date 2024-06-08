@@ -1,4 +1,16 @@
-export const ProductItem = ({ product, onIncrement, onDecrement }) => {
+import useProductStore from "@/store/productStore";
+
+export const ProductItem = ({ product }) => {
+  const { updateProductQuantity } = useProductStore();
+
+  const onIncrement = () => {
+    updateProductQuantity(product.id, product.quantity + 1);
+  };
+
+  const onDecrement = () => {
+      updateProductQuantity(product.id, product.quantity - 1);
+  };
+
   return (
     <li
       key={product.id}

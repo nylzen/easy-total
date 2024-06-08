@@ -1,60 +1,16 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useRef } from "react";
 import { Total } from "../Total/Total";
 import { ProductForm } from "../ProductForm/ProductForm";
 import { ProductList } from "../ProductList/ProductList";
 import { Toaster, toast } from "sonner";
-
-const saveToLocalStorage = (products) =>
-  localStorage.setItem("products", JSON.stringify(products));
-
-const getProductsFromLocalStorage = () =>
-  JSON.parse(localStorage.getItem("products")) || [];
+import useProductStore from "../../store/productStore";
 
 export const Form = () => {
-  let initialProducts = getProductsFromLocalStorage();
-
-  const [products, setProducts] = useState(initialProducts);
-  const [total, setTotal] = useState(0);
+  const { products, total, addProduct, updateProductQuantity } =
+    useProductStore();
   const nameInputRef = useRef(null);
-
-  useEffect(() => {
-    const productsFromLocalStorage = getProductsFromLocalStorage();
-    if (productsFromLocalStorage.length > 0) {
-      setProducts(productsFromLocalStorage);
-    }
-  }, []);
-
-  useEffect(() => {
-    const calculateTotal = () => {
-      if (products.length === 0) {
-        return setTotal(0);
-      }
-
-      const total = products.reduce((acc, product) => {
-        return acc + product.price * product.quantity;
-      }, 0);
-      setTotal(total);
-    };
-
-    calculateTotal();
-    saveToLocalStorage(products);
-  }, [products]);
-
-  const addProduct = (product) => {
-    setProducts((prevProducts) => [...product, ...prevProducts]);
-  };
-
-  const updateProductQuantity = (index, quantity) => {
-    const newProducts = [...products];
-    if (quantity > 0) {
-      newProducts[index].quantity = quantity;
-    } else {
-      newProducts.splice(index, 1);
-    }
-    setProducts(newProducts);
-  };
 
   const generateMessage = () => {
     const date = new Date().toLocaleDateString("es-AR");
@@ -76,11 +32,9 @@ export const Form = () => {
       (err) => {
         toast("Error al copiar el mensaje.", { type: "error" });
         console.error("Error al copiar el mensaje: ", err);
-      },
+      }
     );
   };
-
-  console.log(products);
 
   return (
     <section className=" pb-20 flex flex-col h-screen bg-gray-950 text-gray-50">
@@ -91,15 +45,17 @@ export const Form = () => {
           products={products}
           updateProductQuantity={updateProductQuantity}
         />
-        <div className="bg-gray-800 py-6 px-6 flex items-center justify-center absolute w-full bottom-0 left-0">
-          <Total total={total} />
-          <Toaster position="bottom-center" richColors closeButton />
-          <button
-            onClick={handleCopyToClipboard}
-            className="bg-green-500 text-white px-4 py-2 rounded-md"
-          >
-            Copiar
-          </button>
+        <div className="bg-gray-800 py-6 px-6 flex items-center absolute w-full bottom-0 left-0">
+          <div className="max-w-[800px] w-full flex mx-auto">
+            <Total total={total} />
+            <Toaster position="bottom-center" richColors closeButton />
+            <button
+              onClick={handleCopyToClipboard}
+              className="bg-green-500 text-white px-4 py-2 rounded-md"
+            >
+              Copiar
+            </button>
+          </div>
         </div>
       </div>
     </section>

@@ -18,14 +18,12 @@ export const ProductForm = ({ addProduct, nameInputRef }) => {
       return;
     }
 
-    addProduct([
-      {
-        id: Date.now(),
-        name: newProduct,
-        price: Number(price),
-        quantity: 1,
-      },
-    ]);
+    addProduct({
+      id: Date.now(),
+      name: newProduct,
+      price: Number(price),
+      quantity: 1,
+    });
     setNewProduct("");
     setPrice("");
     setError("");
