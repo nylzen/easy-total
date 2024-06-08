@@ -12,7 +12,9 @@ export const Form = () => {
 
   useEffect(() => {
     const calculateTotal = () => {
-      if (products.length === 0) return;
+      if (products.length === 0) {
+        return setTotal(0);
+      }
 
       const total = products.reduce((acc, product) => {
         return acc + product.price * product.quantity;
@@ -24,7 +26,7 @@ export const Form = () => {
   }, [products]);
 
   const addProduct = (product) => {
-    setProducts((prevProducts) => [...product,...prevProducts]);
+    setProducts((prevProducts) => [...product, ...prevProducts]);
   };
 
   const updateProductQuantity = (index, quantity) => {
