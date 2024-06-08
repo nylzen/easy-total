@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 
-export const ProductForm = ({ addProduct, nameInputRef }) => {
+export const ProductForm = ({ addProduct }) => {
   const [newProduct, setNewProduct] = useState("");
   const [price, setPrice] = useState("");
   const [error, setError] = useState("");
@@ -27,7 +27,6 @@ export const ProductForm = ({ addProduct, nameInputRef }) => {
     setNewProduct("");
     setPrice("");
     setError("");
-    nameInputRef.current.focus();
   };
 
   return (
@@ -39,7 +38,6 @@ export const ProductForm = ({ addProduct, nameInputRef }) => {
           className="bg-gray-800 border-gray-700 text-gray-50 placeholder:text-gray-400 rounded-md py-2 px-4 border"
           onChange={(e) => setNewProduct(e.target.value)}
           value={newProduct}
-          ref={nameInputRef}
         />
         <input
           type="text"
