@@ -40,7 +40,7 @@ export const ProductForm = ({ addProduct }) => {
           value={newProduct}
         />
         <input
-          type="text"
+          type="tel"
           placeholder="Precio"
           className="bg-gray-800 border-gray-700 text-gray-50 placeholder:text-gray-400 rounded-md py-2 px-4 border"
           onChange={(e) => setPrice(e.target.value)}
