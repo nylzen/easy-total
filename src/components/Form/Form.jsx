@@ -35,7 +35,6 @@ export const Form = () => {
 
   const addProduct = (product) => {
     setProducts((prevProducts) => [...product, ...prevProducts]);
-    saveToLocalStorage([...product, ...products]);
   };
 
   const updateProductQuantity = (index, quantity) => {
