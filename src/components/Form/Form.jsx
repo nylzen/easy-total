@@ -6,16 +6,25 @@ import { ProductForm } from "../ProductForm/ProductForm";
 import { ProductList } from "../ProductList/ProductList";
 import { Toaster, toast } from "sonner";
 
+const saveToLocalStorage = (products) =>
+  localStorage.setItem("products", JSON.stringify(products));
+
+const getProductsFromLocalStorage = () =>
+  JSON.parse(localStorage.getItem("products")) || [];
+
 export const Form = () => {
-  const [products, setProducts] = useState(
-    JSON.parse(localStorage.getItem("products")) || [],
-  );
+  let initialProducts = getProductsFromLocalStorage();
+
+  const [products, setProducts] = useState(initialProducts);
   const [total, setTotal] = useState(0);
   const nameInputRef = useRef(null);
 
-  const saveToLocalStorage = (products) => {
-    localStorage.setItem("products", JSON.stringify(products));
-  };
+  useEffect(() => {
+    const productsFromLocalStorage = getProductsFromLocalStorage();
+    if (productsFromLocalStorage.length > 0) {
+      setProducts(productsFromLocalStorage);
+    }
+  }, []);
 
   useEffect(() => {
     const calculateTotal = () => {
@@ -71,6 +80,8 @@ export const Form = () => {
     );
   };
 
+  console.log(products);
+
   return (
     <section className=" pb-20 flex flex-col h-screen bg-gray-950 text-gray-50">
       <div className="md:max-w-[800px] container mx-auto px-4 py-8 flex-1 overflow-auto">
@@ -82,7 +93,7 @@ export const Form = () => {
         />
         <div className="bg-gray-800 py-6 px-6 flex items-center justify-center absolute w-full bottom-0 left-0">
           <Total total={total} />
-          <Toaster position="bottom-center" richColors closeButton/>
+          <Toaster position="bottom-center" richColors closeButton />
           <button
             onClick={handleCopyToClipboard}
             className="bg-green-500 text-white px-4 py-2 rounded-md"
