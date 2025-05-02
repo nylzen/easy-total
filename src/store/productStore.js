@@ -8,34 +8,49 @@ const useProductStore = create(
       total: 0,
       addProduct: (product) =>
         set((state) => {
-          const newProducts = [product, ...state.products];
-          const newTotal = newProducts.reduce((acc, product) => {
-            return acc + product.price * product.quantity;
-          }, 0);
-          return { products: newProducts, total: newTotal };
+          const products = [product, ...state.products];
+          const total = products.reduce(
+            (sum, product) => sum + product.price * product.quantity,
+            0
+          );
+          return { products, total };
         }),
       updateProductQuantity: (id, quantity) =>
         set((state) => {
-          const productToUpdate = state.products.find(
-            (product) => product.id === id
+          const products = state.products.map((product) =>
+            product.id === id ? { ...product, quantity } : product
           );
-
-          if (!productToUpdate) {
-            return state;
-          }
-
-          const updatedProduct = { ...productToUpdate, quantity: quantity };
-
-          const newProducts = state.products.map((product) =>
-            product.id === id ? updatedProduct : product
+          const total = products.reduce(
+            (sum, product) => sum + product.price * product.quantity,
+            0
           );
-
-          const filteredProducts = newProducts.filter(
-            (product) => product.quantity > 0
-          );
-
-          return { products: filteredProducts };
+          return { products, total };
         }),
+      updateProduct: (id, updatedProduct) =>
+        set((state) => {
+          const products = state.products.map((product) =>
+            product.id === id ? { ...product, ...updatedProduct } : product
+          );
+          const total = products.reduce(
+            (sum, product) => sum + product.price * product.quantity,
+            0
+          );
+          return { products, total };
+        }),
+      deleteProduct: (id) =>
+        set((state) => {
+          const products = state.products.filter((product) => product.id !== id);
+          const total = products.reduce(
+            (sum, product) => sum + product.price * product.quantity,
+            0
+          );
+          return { products, total };
+        }),
+      clearList: () =>
+        set(() => ({
+          products: [],
+          total: 0,
+        })),
       calculateTotal: () =>
         set((state) => ({
           total: state.products.reduce((acc, product) => {

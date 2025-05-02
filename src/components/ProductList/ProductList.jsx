@@ -4,16 +4,22 @@ import { ProductItem } from "../ProductItem/ProductItem";
 export const ProductList = () => {
   const products = useProductStore((state) => state.products);
 
+  if (products.length === 0) {
+    return (
+      <div className="text-center py-8 text-gray-400">
+        No hay productos agregados
+      </div>
+    );
+  }
 
   return (
-    <ul className="grid gap-4">
-      {products.map((product, index) => (
+    <div className="space-y-3 mt-6">
+      {products.map((product) => (
         <ProductItem
           key={product.id}
           product={product}
-
         />
       ))}
-    </ul>
+    </div>
   );
 };
