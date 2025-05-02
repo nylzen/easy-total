@@ -1,4 +1,4 @@
-export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => {
+export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message, isDelete = false }) => {
   if (!isOpen) return null;
 
   return (
@@ -55,7 +55,7 @@ export const ConfirmModal = ({ isOpen, onClose, onConfirm, title, message }) => 
               }}
               className="flex-1 px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition-colors"
             >
-              Vaciar lista
+              {isDelete ? "Eliminar" : "Vaciar lista"}
             </button>
           </div>
         </div>
