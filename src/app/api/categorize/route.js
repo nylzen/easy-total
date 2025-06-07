@@ -189,8 +189,8 @@ Responde ÚNICAMENTE con un objeto JSON válido en el siguiente formato, sin tex
     );
 
     const response = await Promise.race([requestPromise, timeoutPromise]);
-    const result = await response.response;
-    const text = result.text();
+    const geminiResult = await response.response;
+    const text = geminiResult.text();
 
     // Parsear respuesta
     const cleanText = text
@@ -199,11 +199,11 @@ Responde ÚNICAMENTE con un objeto JSON válido en el siguiente formato, sin tex
       .trim();
 
     const parsedResponse = JSON.parse(cleanText);
-    const result = parsedResponse.categorizedProducts || [];
+    const categorizedProducts = parsedResponse.categorizedProducts || [];
 
     // Guardar en cache
     serverCache.set(cacheKey, {
-      data: result,
+      data: categorizedProducts,
       timestamp: Date.now(),
     });
 
@@ -213,11 +213,11 @@ Responde ÚNICAMENTE con un objeto JSON válido en el siguiente formato, sin tex
     // Log para monitoreo
     if (process.env.NODE_ENV === "development") {
       console.log(
-        `✅ Categorización exitosa: ${products.length} productos, ${result.length} categorizados`
+        `✅ Categorización exitosa: ${products.length} productos, ${categorizedProducts.length} categorizados`
       );
     }
 
-    return NextResponse.json({ categorizedProducts: result });
+    return NextResponse.json({ categorizedProducts });
   } catch (error) {
     console.error("Error en categorización:", error);
     console.error("Error details:", {
