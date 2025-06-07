@@ -4,8 +4,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
-  title: "EasyTotal",
-  description: "Simple and easy way to calculate your supermarket total",
+  title: "Mi Chango",
+  description: "Calcula fácilmente el total de tu lista de compras",
 };
 
 export default function RootLayout({ children }) {
