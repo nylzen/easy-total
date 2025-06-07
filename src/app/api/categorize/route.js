@@ -1,9 +1,6 @@
 import { GoogleGenAI } from "@google/genai";
 import { NextResponse } from "next/server";
 
-// Configuración segura en el servidor
-const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY); // Sin NEXT_PUBLIC_
-
 // Límites de seguridad
 const MAX_PRODUCTS = 50;
 const MAX_TOKENS_PER_REQUEST = 1000;
@@ -71,11 +68,15 @@ export async function POST(request) {
   try {
     // Verificar API key
     if (!process.env.GEMINI_API_KEY) {
+      console.error("GEMINI_API_KEY no está configurada");
       return NextResponse.json(
         { error: "API key no configurada" },
         { status: 500 }
       );
     }
+
+    // Crear instancia de GoogleGenAI dentro de la función
+    const genAI = new GoogleGenAI(process.env.GEMINI_API_KEY);
 
     // Rate limiting
     const ip = getRateLimitKey(request);
@@ -179,17 +180,17 @@ Responde ÚNICAMENTE con un objeto JSON válido en el siguiente formato, sin tex
 `;
 
     // Llamar a Gemini con timeout
-    const requestPromise = genAI.models.generateContent({
-      model: "gemini-2.0-flash",
-      contents: prompt,
-    });
+    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
+
+    const requestPromise = model.generateContent(prompt);
 
     const timeoutPromise = new Promise((_, reject) =>
       setTimeout(() => reject(new Error("Request timeout")), REQUEST_TIMEOUT)
     );
 
     const response = await Promise.race([requestPromise, timeoutPromise]);
-    const text = response.text;
+    const result = await response.response;
+    const text = result.text();
 
     // Parsear respuesta
     const cleanText = text
@@ -219,11 +220,25 @@ Responde ÚNICAMENTE con un objeto JSON válido en el siguiente formato, sin tex
     return NextResponse.json({ categorizedProducts: result });
   } catch (error) {
     console.error("Error en categorización:", error);
+    console.error("Error details:", {
+      message: error.message,
+      stack: error.stack,
+      name: error.name,
+    });
 
     if (error.message === "Request timeout") {
       return NextResponse.json(
         { error: "Timeout: La categorización tardó demasiado" },
         { status: 408 }
+      );
+    }
+
+    // Si el error contiene información sobre API key
+    if (error.message && error.message.includes("API key")) {
+      console.error("Error relacionado con API key:", error.message);
+      return NextResponse.json(
+        { error: "Error de configuración de API key" },
+        { status: 500 }
       );
     }
 
