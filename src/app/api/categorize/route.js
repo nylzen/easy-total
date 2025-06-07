@@ -179,18 +179,18 @@ Responde ÚNICAMENTE con un objeto JSON válido en el siguiente formato, sin tex
 }
 `;
 
-    // Llamar a Gemini con timeout
-    const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash-exp" });
-
-    const requestPromise = model.generateContent(prompt);
+        // Llamar a Gemini con timeout
+    const requestPromise = genAI.models.generateContent({
+      model: "gemini-2.0-flash",
+      contents: prompt,
+    });
 
     const timeoutPromise = new Promise((_, reject) =>
       setTimeout(() => reject(new Error("Request timeout")), REQUEST_TIMEOUT)
     );
 
     const response = await Promise.race([requestPromise, timeoutPromise]);
-    const geminiResult = await response.response;
-    const text = geminiResult.text();
+    const text = response.text;
 
     // Parsear respuesta
     const cleanText = text
