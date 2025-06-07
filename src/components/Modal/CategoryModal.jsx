@@ -5,6 +5,7 @@ export const CategoryModal = ({
   onClose,
   onConfirmWithAI,
   onConfirmWithoutAI,
+  onCopyToClipboard,
   productCount,
   isLoading,
 }) => {
@@ -43,7 +44,7 @@ export const CategoryModal = ({
               {productCount} productos listos para compartir
             </p>
             <p className="text-gray-400 text-sm mb-2">
-              Elige si quieres categorizar con IA o compartir directamente
+              Se copiará automáticamente al portapapeles y se abrirá WhatsApp
             </p>
             <p className="text-xs text-gray-500">
               Categorizaciones restantes hoy: {dailyStatus.remaining}/15
@@ -112,6 +113,8 @@ export const CategoryModal = ({
               </svg>
               Solo compartir
             </button>
+
+
 
             {/* Botón cancelar */}
             <button
